@@ -33,10 +33,11 @@ GROUP BY account_id
 ORDER BY balance DESC 
 LIMIT 5;
 
-SELECT * 
+SELECT account_id, amount
 FROM bank_transaction
 WHERE transaction_type = 'Debit'
-AND amount > 50000;
+AND amount > 50000
+LIMIT 10;
 
 SELECT MONTH(transaction_date) AS month,
 SUM(amount) AS total 
@@ -46,11 +47,12 @@ ORDER BY month;
 
 SELECT city, MAX(amount) AS highest
 FROM bank_transaction 
-GROUP BY city;
+GROUP BY city
+ORDER BY highest DESC;
 
-SELECT * 
+SELECT city, amount, rnk
 FROM (
-    SELECT *,
+    SELECT city, amount,
     DENSE_RANK() OVER (PARTITION BY city ORDER BY amount DESC) AS rnk
     FROM bank_transaction
 ) t
